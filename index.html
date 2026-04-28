@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes of Legends</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-secondary: #161616;
+            --bg-tertiary: #1c1c1c;
+            --text-primary: #f0ece4;
+            --text-secondary: #b0aca5;
+            --text-tertiary: #6b6560;
+            --accent: #d4a574;
+            --accent-soft: #c9976b;
+            --accent-glow: rgba(212, 165, 116, 0.15);
+            --divider: rgba(255, 255, 255, 0.06);
+            --divider-strong: rgba(255, 255, 255, 0.1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --max-width: 680px;
+            --transition-speed: 0.3s;
+            --easing: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.light-mode {
+            --bg: #f5f3f0;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0ede8;
+            --text-primary: #1c1917;
+            --text-secondary: #44403c;
+            --text-tertiary: #78716c;
+            --accent: #c27e4a;
+            --accent-soft: #b46f3a;
+            --accent-glow: rgba(194, 126, 74, 0.1);
+            --divider: rgba(0, 0, 0, 0.08);
+            --divider-strong: rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            width: 100%;
+            max-width: var(--max-width);
+            animation: fadeInUp 0.8s var(--easing) forwards;
+            opacity: 0;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 32px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            color: var(--text-secondary);
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--divider);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--divider-strong);
+            transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            background: var(--bg-tertiary);
+        }
+
+        .logo-img:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 28px var(--accent-glow);
+        }
+
+        .logo-fallback {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            border: 2px solid var(--divider-strong);
+            letter-spacing: 1px;
+        }
+
+        .header-title {
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            letter-spacing: 0.01em;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Quote of the Day Card */
+        .quote-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--divider-strong);
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin: 20px 0 28px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .quote-card-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .quote-card-text {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .quote-card-author {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--divider-strong);
+            border-radius: 40px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: all var(--transition-speed) ease;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Category Filters */
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .category-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--divider-strong);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-btn.active {
+            background: var(--accent);
+            color: #0f0f0f;
+            border-color: var(--accent);
+        }
+
+        .category-btn:hover:not(.active) {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .main-container {
+            width: 100%;
+            max-width: var(--max-width);
+            flex: 1;
+            padding-bottom: 60px;
+        }
+
+        /* Home View - Legend List */
+        .legend-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .legend-item {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeInUp 0.55s var(--easing) forwards;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .legend-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 4px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            position: relative;
+            border-bottom: 1px solid var(--divider);
+            cursor: pointer;
+            outline: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .legend-link:hover,
+        .legend-link:focus-visible {
+            color: var(--accent);
+            transform: translateX(6px);
+        }
+
+        .legend-link:active {
+            transform: translateX(2px);
+            color: var(--accent-soft);
+            transition: transform 0.1s ease, color 0.1s ease;
+        }
+
+        .legend-link::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width var(--transition-speed) var(--easing);
+        }
+
+        .legend-link:hover::after,
+        .legend-link:focus-visible::after {
+            width: 100%;
+        }
+
+        .legend-arrow {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            margin-left: 12px;
+            font-weight: 300;
+            flex-shrink: 0;
+        }
+
+        .legend-link:hover .legend-arrow,
+        .legend-link:focus-visible .legend-arrow {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+
+        .legend-name {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Detail View */
+        .detail-view {
+            display: none;
+            animation: fadeInUp 0.5s var(--easing) forwards;
+            opacity: 0;
+        }
+
+        .detail-view.active {
+            display: block;
+            animation: fadeInUp 0.5s var(--easing) forwards;
+            opacity: 0;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            margin-bottom: 24px;
+            background: none;
+            border: 1px solid var(--divider-strong);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            letter-spacing: -0.01em;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .back-button:hover,
+        .back-button:focus-visible {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-glow);
+            transform: translateX(-3px);
+        }
+
+        .back-button:active {
+            transform: translateX(-1px);
+            transition: transform 0.1s ease;
+        }
+
+        .back-arrow {
+            font-size: 0.85rem;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .back-button:hover .back-arrow,
+        .back-button:focus-visible .back-arrow {
+            transform: translateX(-2px);
+        }
+
+        .detail-header {
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--divider-strong);
+        }
+
+        .detail-name {
+            font-size: clamp(1.6rem, 3.5vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .detail-quote-count {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .quotes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quote-item {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--divider);
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeInUp 0.4s var(--easing) forwards;
+            line-height: 1.7;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: -0.005em;
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .quote-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 26px;
+            width: 3px;
+            height: calc(100% - 40px);
+            max-height: 48px;
+            border-radius: 3px;
+            background: var(--accent);
+            opacity: 0.5;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .quote-item:hover::before {
+            opacity: 1;
+        }
+
+        .quote-item:hover {
+            color: var(--text-primary);
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-weight: 400;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .quote-item:hover .quote-text {
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            width: 100%;
+            max-width: var(--max-width);
+            border-top: 1px solid var(--divider);
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes subtlePulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .legend-item.animated {
+            animation: fadeInUp 0.55s var(--easing) forwards;
+        }
+
+        /* Focus states for accessibility */
+        .legend-link:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .back-button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Loading shimmer for logo */
+        .logo-img.loading {
+            animation: subtlePulse 1.5s ease-in-out infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .header {
+                padding: 36px 16px 24px;
+            }
+            .theme-toggle {
+                top: 24px;
+                right: 12px;
+            }
+            .logo-img,
+            .logo-fallback {
+                width: 52px;
+                height: 52px;
+            }
+            .header-title {
+                font-size: 1.6rem;
+            }
+            .header-subtitle {
+                font-size: 0.85rem;
+            }
+            .legend-link {
+                padding: 16px 2px;
+                font-size: 0.98rem;
+            }
+            .quote-item {
+                padding: 16px 0;
+                padding-left: 24px;
+                font-size: 0.93rem;
+            }
+            .quote-item::before {
+                top: 22px;
+                width: 2px;
+            }
+            .detail-name {
+                font-size: 1.4rem;
+            }
+            .back-button {
+                padding: 8px 14px;
+                font-size: 0.82rem;
+            }
+            body {
+                padding: 0 14px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .legend-link {
+                font-size: 1.1rem;
+                padding: 20px 6px;
+            }
+            .quote-item {
+                font-size: 1.05rem;
+                padding: 22px 0;
+                padding-left: 32px;
+            }
+            .logo-img,
+            .logo-fallback {
+                width: 72px;
+                height: 72px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .legend-link,
+            .back-button {
+                color: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">🌙</button>
+        <div class="logo-container">
+            <img
+            class="logo-img"
+            src="https://drive.google.com/thumbnail?id=1NpeweVUUxvsTUzMW71kjonsGh2sD7qYY&sz=w200"
+            alt="Quotes of Legends Logo"
+            loading="eager"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            onload="this.classList.remove('loading');"
+            >
+            <div class="logo-fallback" style="display:none;" aria-hidden="true">QL</div>
+        </div>
+        <h1 class="header-title">Quotes of Legends</h1>
+        <p class="header-subtitle">Wisdom whispers from the greatest minds in history</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container" id="mainContainer">
+        <!-- Home View -->
+        <nav aria-label="Legends list" id="homeView">
+            <div id="quoteOfTheDayCard" class="quote-card"></div>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by legend name...">
+            </div>
+            <div id="categoryFilters" class="category-filters"></div>
+            <ul class="legend-list" id="legendList">
+                <!-- Dynamically populated -->
+            </ul>
+        </nav>
+
+        <!-- Detail View -->
+        <div class="detail-view" id="detailView" aria-hidden="true">
+            <button class="back-button" id="backButton" aria-label="Go back to all legends">
+                <span class="back-arrow">←</span> Back to all legends
+            </button>
+            <div class="detail-header">
+                <h2 class="detail-name" id="detailName"></h2>
+                <span class="detail-quote-count" id="detailQuoteCount"></span>
+            </div>
+            <ul class="quotes-list" id="quotesList">
+                <!-- Dynamically populated -->
+            </ul>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>Quotes of Legends &copy; 2026 &mdash; Curated wisdom for the soul</span>
+    </footer>
+
+    <script>
+        (function() {
+            // ──────────────────────────────────────
+            // DATA: 20 Legends + 6 New Legends (Categories included)
+            // ──────────────────────────────────────
+            const legendsData = [
+                { id: 'che-guevara', name: 'Che Guevara', category: 'Revolutionaries', quotes: [ 'The revolution is not an apple that falls when it is ripe. You have to make it fall.', 'I am not a liberator. Liberators do not exist. The people liberate themselves.', 'If you tremble with indignation at every injustice then you are a comrade of mine.', "I don't care if I fall as long as someone else picks up my gun and keeps on shooting.", 'Silence is argument carried on by other means.', 'Words that do not match deeds are unimportant.', 'Knowledge makes us critical, and being critical makes us revolutionary.', 'Better to die standing than to live on your knees.', 'We have no right to believe that freedom can be won without struggle.', 'At the risk of seeming ridiculous, let me say that the true revolutionary is guided by a great feeling of love. It is impossible to think of a genuine revolutionary lacking this quality.' ] },
+                { id: 'mahatma-gandhi', name: 'Mahatma Gandhi', category: 'Indian Leaders', quotes: [ 'Be the change that you wish to see in the world.', 'The weak can never forgive. Forgiveness is the attribute of the strong.', 'An eye for an eye only ends up making the whole world blind.', 'Happiness is when what you think, what you say, and what you do are in harmony.', 'Where there is love there is life.', 'My life is my message.', 'The future depends on what you do today.', 'The greatness of a nation and its moral progress can be judged by the way its animals are treated.', 'Freedom is not worth having if it does not include the freedom to make mistakes.', 'In a gentle way, you can shake the world.', 'Live as if you were to die tomorrow. Learn as if you were to live forever.', "Earth provides enough to satisfy every man's needs, but not every man's greed.", 'Nobody can hurt me without my permission.', 'God has no religion.', 'I will not let anyone walk through my mind with their dirty feet.', 'There are people in the world so hungry, that God cannot appear to them except in the form of bread.' ] },
+                { id: 'b-r-ambedkar', name: 'B. R. Ambedkar', category: 'Indian Leaders', quotes: [ 'Education is the milk of a lioness — whoever drinks it will roar.', 'Life should be great rather than long.', 'I measure the progress of a community by the degree of progress which women have achieved.', 'Be educated, be organized, and be agitated.', 'A great man is different from an eminent one in that he is ready to be the servant of the society.', 'Religion is for man, not man for religion.', 'If I find the constitution being misused, I shall be the first to burn it.', 'Lost rights are never regained by begging and by prayers but by organized and organized struggle.', 'Cultivation of mind should be the ultimate aim of human existence.', 'The relationship between husband and wife should be one of closest friends.', 'Political tyranny is nothing compared to the social tyranny and a reformer who defies society is a more courageous man than a politician who defies government.', 'So long as you do not achieve social liberty, whatever freedom is provided by the law is of no avail to you.', 'Men are mortal. So are ideas. An idea needs propagation as much as a plant needs watering.', 'I like the religion that teaches liberty, equality, and fraternity.', 'Equality may be a fiction but nonetheless one must accept it as a governing principle.', 'The strength of a community lies in its unity and organization.' ] },
+                { id: 'abraham-lincoln', name: 'Abraham Lincoln', category: 'Leaders', quotes: [ 'In the end, it is not the years in your life that count — it is the life in your years.', 'Give me six hours to chop down a tree and I will spend the first four sharpening the axe.', 'Whatever you are, be a good one.', 'My concern is not whether God is on our side; my greatest concern is to be on God\'s side.', 'The best way to predict your future is to create it.', 'No man has a good enough memory to be a successful liar.', 'I am not bound to win, but I am bound to be true.', 'I walk slowly, but I never walk backward.', 'Those who look for the bad in people will surely find it.', 'You can fool all the people some of the time and some of the people all the time, but you cannot fool all the people all the time.', 'Always bear in mind that your own resolution to succeed is more important than any other thing.', 'Character is like a tree and reputation is its shadow.', 'The ballot is stronger than the bullet.', 'Nearly all men can stand adversity, but if you want to test a man\'s character, give him power.', 'No man is good enough to govern another man without the other\'s consent.', 'When I do good, I feel good; when I do bad, I feel bad — and that is my religion.', 'A house divided against itself cannot stand.' ] },
+                { id: 'bruce-lee', name: 'Bruce Lee', category: 'Athletes', quotes: [ 'Do not pray for an easy life, pray for the strength to endure a difficult one.', 'Be like water making its way through cracks.', 'The successful warrior is the average man with laser-like focus.', 'Knowing is not enough, we must apply. Willing is not enough, we must do.', 'If you spend too much time thinking about a thing, you\'ll never get it done.', 'A wise man can learn more from a foolish question than a fool can learn from a wise answer.', 'Mistakes are always forgivable, if one has the courage to admit them.', 'Life itself is your teacher, and you are in a state of constant learning.', 'The key to immortality is first living a life worth remembering.', 'Always be yourself, express yourself, have faith in yourself.', 'Empty your mind, be formless, shapeless — like water.', 'Love is like a friendship caught on fire.', 'To hell with circumstances; I create opportunities.', 'If you always put limits on everything you do, it will spread into your work and into your life.', 'Real living is living for others.' ] },
+                { id: 'swami-vivekananda', name: 'Swami Vivekananda', category: 'Philosophers', quotes: [ 'Arise, awake and stop not till the goal is reached.', 'You cannot believe in God until you believe in yourself.', 'The greatest sin is to think yourself weak.', 'Take risks in your life — if you win, you can lead; if you lose, you can guide.', 'The fire that warms us can also consume us; it is not the fault of the fire.', 'We are what our thoughts have made us, so take care about what you think.', 'Talk to yourself once in a day, otherwise you may miss meeting an excellent person in this world.', 'The world is the great gymnasium where we come to make ourselves strong.', 'Comfort is no test of truth; truth is often far from being comfortable.', 'All the powers in the universe are already ours; it is we who have put our hands before our eyes and cry that it is dark.', 'Do not wait for anybody or anything. Do what you can. Build your hope on none.', 'The more we come out and do good to others, the more our hearts will be purified.', 'Stand up, be bold, be strong. Take the whole responsibility on your own shoulders.', 'Truth can be stated in a thousand different ways, yet each one can be true.' ] },
+                { id: 'apj-abdul-kalam', name: 'APJ Abdul Kalam', category: 'Indian Leaders', quotes: [ 'Dream is not that which you see while sleeping; it is something that does not let you sleep.', 'You have to dream before your dreams can come true.', 'Don\'t take rest after your first victory because if you fail in the second, more lips are waiting to say that your first victory was just luck.', 'All of us do not have equal talent, but all of us have an equal opportunity to develop our talents.', 'Man needs his difficulties because they are necessary to enjoy success.', 'If you want to shine like a sun, first burn like a sun.', 'Excellence is a continuous process and not an accident.', 'Without your involvement you can\'t succeed; with your involvement you can\'t fail.', 'Climbing to the top demands strength, whether it is to the top of Mount Everest or to the top of your career.', 'Look at the sky. We are not alone. The whole universe is friendly to us.', 'To succeed in life and achieve results, you must understand and master three mighty forces: desire, belief, and expectation.', 'Be more dedicated to making solid achievements than in running after swift but synthetic happiness.', 'Thinking is the capital, enterprise is the way, hard work is the solution.', 'One best book is equal to a hundred good friends, but one good friend is equal to a library.', 'Science is a beautiful gift to humanity; we should not distort it.' ] },
+                { id: 'ratan-tata', name: 'Ratan Tata', category: 'Leaders', quotes: [ 'I don\'t believe in taking right decisions. I take decisions and then make them right.', 'Ups and downs in life are very important to keep us going, because a straight line even in an ECG means we are not alive.', 'None can destroy iron, but its own rust can. Likewise, none can destroy a person, but their own mindset can.', 'Power and wealth are not two of my main stakes.', 'Business need not be a zero-sum game; it can be win-win for multiple stakeholders.', 'Teamwork is critical. There is no substitute for the best team.', 'The day I am not able to fly will be a sad day for me.', 'Never stop fighting until you arrive at your destined place — that is the unique you.', 'Take the stones people throw at you and use them to build a monument.', 'I admire people who are very successful, but those who have not had to cheat to get there.', 'Corruption is the enemy of development and of good governance.', 'A person who is tried and tested is more valuable than someone who has not been challenged.', 'We need people who can dream beyond their own personal interests.' ] },
+                { id: 'albert-einstein', name: 'Albert Einstein', category: 'Philosophers', quotes: [ 'Imagination is more important than knowledge.', 'Life is like riding a bicycle. To keep your balance, you must keep moving.', 'The true sign of intelligence is not knowledge but imagination.', 'Anyone who has never made a mistake has never tried anything new.', 'In the middle of every difficulty lies opportunity.', 'The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.', 'Once you stop learning, you start dying.', 'Logic will get you from A to Z; imagination will get you everywhere.', 'Try not to become a man of success, but rather try to become a man of value.', 'Creativity is intelligence having fun.', 'The measure of intelligence is the ability to change.', 'Only a life lived for others is a life worthwhile.', 'If you cannot explain it simply, you do not understand it well enough.', 'Weakness of attitude becomes weakness of character.', 'Great spirits have always encountered violent opposition from mediocre minds.', 'Science without religion is lame, religion without science is blind.', 'The important thing is not to stop questioning. Curiosity has its own reason for existing.' ] },
+                { id: 'confucius', name: 'Confucius', category: 'Philosophers', quotes: [ 'It does not matter how slowly you go as long as you do not stop.', 'Everything has beauty, but not everyone sees it.', 'The man who moves a mountain begins by carrying away small stones.', 'Choose a job you love, and you will never have to work a day in your life.', 'Our greatest glory is not in never falling, but in rising every time we fall.', 'Before you embark on a journey of revenge, dig two graves.', 'He who knows all the answers has not been asked all the questions.', 'The will to win, the desire to succeed, the urge to reach your full potential — these are the keys that will unlock the door to personal excellence.', 'When you know a thing, to hold that you know it; and when you do not know a thing, to allow that you do not know it — this is knowledge.', 'The man of wisdom is never of two minds; the man of benevolence never worries; the man of courage is never afraid.', 'Life is really simple, but we insist on making it complicated.', 'Wheresoever you go, go with all your heart.', 'The superior man is satisfied and composed; the mean man is always full of distress.', 'Real knowledge is to know the extent of one\'s ignorance.', 'To see what is right and not do it is want of courage.', 'He who learns but does not think is lost. He who thinks but does not learn is in great danger.' ] },
+                { id: 'gautama-buddha', name: 'Gautama Buddha', category: 'Philosophers', quotes: [ 'The mind is everything. What you think, you become.', 'Three things cannot be long hidden: the sun, the moon, and the truth.', 'Peace comes from within. Do not seek it without.', 'In the end, only three things matter: how much you loved, how gently you lived, and how gracefully you let go of things not meant for you.', 'The root of suffering is attachment.', 'Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.', 'You yourself, as much as anybody in the entire universe, deserve your love and affection.', 'Health is the greatest gift, contentment the greatest wealth, faithfulness the best relationship.', 'To understand everything is to forgive everything.', 'No one saves us but ourselves. No one can and no one may. We ourselves must walk the path.', 'It is better to conquer yourself than to win a thousand battles.', 'Happiness will never come to those who fail to appreciate what they already have.', 'The tongue, like a sharp knife, kills without drawing blood.', 'You will not be punished for your anger; you will be punished by your anger.', 'If anything is worth doing, do it with all your heart.', 'Work out your own salvation. Do not depend on others.', 'Even death is not to be feared by one who has lived wisely.' ] },
+                { id: 'alexander-the-great', name: 'Alexander the Great', category: 'Leaders', quotes: [ 'There is nothing impossible to him who will try.', 'I am not afraid of an army of lions led by a sheep; I am afraid of an army of sheep led by a lion.', 'Remember, upon the conduct of each depends the fate of all.', 'True refinement seeks simplicity.', 'I had rather excel others in the knowledge of what is excellent than in the extent of my power and dominion.', 'In the end, when it is all over — that is when the real work begins.', 'Through every generation of the human race there has been a constant war — a war with fear.', 'There is something noble in hearing myself ill spoken of when I am doing good.', 'My logisticians are a humorless lot — they know if my campaign fails, they will be the first ones I will slay.', 'How great are the dangers I face to win a good name in Athens.', 'Heaven cannot brook two suns, nor earth two masters.', 'I would rather live a short life of glory than a long life of obscurity.', 'Upon the conduct of each depends the fate of all.', 'I am indebted to my father for living, but to my teacher for living well.', 'We of Macedon for generations past have been trained in the hard school of danger and war.', 'A tomb now suffices him for whom the whole world was not sufficient.' ] },
+                { id: 'nikola-tesla', name: 'Nikola Tesla', category: 'Scientists', quotes: [ 'If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration.', 'The present is theirs; the future, for which I really worked, is mine.', 'I do not think there is any thrill that can go through the human heart like that felt by the inventor as he sees some creation of the brain unfolding to success.', 'Our virtues and our failings are inseparable, like force and matter. When they separate, man is no more.', 'Be alone — that is the secret of invention. Be alone, that is when ideas are born.', 'The scientists of today think deeply instead of clearly. One must be sane to think clearly, but one can think deeply and be quite insane.', 'I do not care that they stole my idea. I care that they do not have any of their own.', 'The day science begins to study non-physical phenomena, it will make more progress in one decade than in all the previous centuries of its existence.', 'My brain is only a receiver. In the universe there is a core from which we obtain knowledge, strength, and inspiration.', 'Life is and will ever remain an equation incapable of solution, but it contains certain known factors.', 'If your hate could be turned into electricity, it would light up the whole world.', 'The opinion of the world does not affect me. I have placed as the real values in my life what follows when I am dead.', 'Of all things, I liked books best.' ] },
+                { id: 'william-shakespeare', name: 'William Shakespeare', category: 'Writers', quotes: [ 'We know what we are, but know not what we may be.', 'To thine own self be true.', 'All the world\'s a stage, and all the men and women merely players.', 'The course of true love never did run smooth.', 'It is not in the stars to hold our destiny, but in ourselves.', 'Love all, trust a few, do wrong to none.', 'What a piece of work is man! How noble in reason, how infinite in faculty.', 'Cowards die many times before their deaths; the valiant never taste of death but once.', 'There is nothing either good or bad, but thinking makes it so.', 'The robbed that smiles steals something from the thief.', 'One touch of nature makes the whole world kin.', 'How sharper than a serpent\'s tooth it is to have a thankless child.', 'We are such stuff as dreams are made on, and our little life is rounded with a sleep.', 'This above all: to thine own self be true, and it must follow, as the night the day, thou canst not then be false to any man.', 'The quality of mercy is not strained; it droppeth as the gentle rain from heaven.', 'Good night, good night! Parting is such sweet sorrow.', 'What is past is prologue.' ] },
+                { id: 'sardar-vallabhbhai-patel', name: 'Sardar Vallabhbhai Patel', category: 'Indian Leaders', quotes: [ 'Every Indian should now forget that he is a Rajput, a Sikh, or a Jat. He must remember that he is an Indian.', 'Manpower without unity is not a strength unless it is harmonized and united properly — then it becomes a spiritual power.', 'The negligence of a few can endanger the efforts of millions.', 'A war based on Satyagraha is always of two kinds: one when we fight the enemy, and the other when by our good conduct we convert him.', 'The iron chains of slavery have been broken, but the chains of poverty, ignorance, and superstition still remain.', 'Take to the path of dharma — the path of truth and justice.', 'Do not get confused between my personal faith and my duty to the nation.', 'Work without expectation of reward is the highest form of service.', 'Unity in diversity is India\'s strength.', 'Small minds see differences; great minds see unity.', 'My only desire is that India should be a good producer and no one should be hungry, shedding tears for food in the country.', 'The nation is built not by words but by actions.', 'Power without discipline is destructive.', 'A true servant of the people never seeks personal glory.', 'One who is the servant of all is the master of all.', 'Anger is the enemy of non-violence and pride is a monster that swallows it up.' ] },
+                { id: 'marcus-aurelius', name: 'Marcus Aurelius', category: 'Philosophers', quotes: [ 'You have power over your mind — not outside events. Realize this, and you will find strength.', 'The happiness of your life depends upon the quality of your thoughts.', 'Waste no more time arguing about what a good man should be. Be one.', 'If it is not right, do not do it. If it is not true, do not say it.', 'Never let the future disturb you. You will meet it, if you have to, with the same weapons of reason which today arm you against the present.', 'The best revenge is to be unlike him who performed the injury.', 'Do not indulge in dreams of what you do not have, but count the blessings you actually possess.', 'The first rule is to keep an untroubled spirit. The second is to look things in the face and know them for what they are.', 'When you wake up in the morning, tell yourself: the people I deal with today will be meddling, ungrateful, arrogant, dishonest, jealous, and surly.', 'Begin at once to live, and count each separate day as a separate life.', 'Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.', 'The impediment to action advances action. What stands in the way becomes the way.', 'Loss is nothing else but change, and change is nature\'s delight.', 'Very little is needed to make a happy life; it is all within yourself, in your way of thinking.', 'Confine yourself to the present.', 'He who lives in harmony with himself lives in harmony with the universe.' ] },
+                { id: 'franz-kafka', name: 'Franz Kafka', category: 'Writers', quotes: [ 'A book must be the axe for the frozen sea within us.', 'I am free and that is why I am lost.', 'There is infinite hope — but not for us.', 'In the fight between you and the world, back the world.', 'A non-writing writer is a monster courting insanity.', 'Youth is happy because it has the capacity to see beauty. Anyone who keeps the ability to see beauty never grows old.', 'I am a cage in search of a bird.', 'Better to have and not need than to need and not have.', 'Start with what is right rather than what is acceptable.', 'My guiding principle is this: guilt is never to be doubted.', 'One must not cheat anybody — not even the world of its triumph.', 'Productivity is being able to do things that you were never able to do before.', 'We photograph things in order to drive them out of our minds.', 'There are only two things worth doing in life: loving and thinking.', 'Logic may indeed be unshakeable, but it cannot withstand a man who wants to go on living.', 'You do not need to leave your room. Remain sitting at your table and listen.', 'In argument, similes are like songs in love — they describe much but prove nothing.', 'The meaning of life is that it stops.' ] },
+                { id: 'rabindranath-tagore', name: 'Rabindranath Tagore', category: 'Writers', quotes: [ 'You can\'t cross the sea merely by standing and staring at the water.', 'The highest education is that which does not merely give us information but makes our life in harmony with all existence.', 'Let your life lightly dance on the edges of time like dew on the tip of a leaf.', 'Faith is the bird that feels the light when the dawn is still dark.', 'If you cry because the sun has gone out of your life, your tears will prevent you from seeing the stars.', 'The roots below the earth claim no rewards for making the branches fruitful.', 'Love is not a mere impulse; it must contain truth, which is its law.', 'We read the world wrong and say that it deceives us.', 'The flower which is single need not envy the thorns that are numerous.', 'Do not say "never" when your heart is bursting with tomorrow.', 'A mind all logic is like a knife all blade — it makes the hand bleed that uses it.', 'Where the mind is without fear and the head is held high — where knowledge is free.', 'Clouds come floating into my life, no longer to carry rain or usher storm, but to add color to my sunset sky.', 'The small wisdom is like water in a glass: clear, transparent, pure. The great wisdom is like the water in the sea: dark, mysterious, impenetrable.', 'He who wants to do good knocks at the gate; he who loves finds the gate open.', 'Beauty is truth\'s smile when she beholds her own face in a perfect mirror.' ] },
+                { id: 'mike-tyson', name: 'Mike Tyson', category: 'Athletes', quotes: [ 'Everyone has a plan till they get punched in the mouth.', 'I am the most brutal and vicious and most ruthless champion there has ever been.', 'Fear is your best friend or your worst enemy. It is like fire — if you can control it, it can cook for you; it can heat your house.', 'I am the best ever. I am the most brutal and vicious and most ruthless champion there has ever been. No one can stop me.', 'Discipline is doing what you hate to do, but doing it like you love it.', 'As long as we persevere and endure, we can get anything we want.', 'I just want to conquer people and their souls.', 'When you have something in life that you want to accomplish greatly, you have to be willing to give up your happiness.', 'I am a dreamer. I really believe my dreams will manifest into reality.', 'Real confidence has no room for jealousy and envy. When you know you are great, you have no reason to hate.', 'A man that is a friend to everyone is an enemy to himself.', 'The temptations are great, but the rewards of discipline are greater.', 'Fighting is not physical — fighting is spiritual. It is the determination and the will to fight.', 'One day some kid is going to be the best fighter in the world. They are going to beat everybody. They are going to be great.', 'Success is fighting through your fear and doing it anyway.' ] },
+                { id: 'michael-jackson', name: 'Michael Jackson', category: 'Artists', quotes: [ 'In a world filled with hate, we must still dare to hope.', 'I am going to say something I have never said before, and this is the truth. I have no reason to lie to you, and God knows I am telling the truth. I think all my success and fame — and I have wanted it, I have wanted it — because I wanted to be loved.', 'The greatest education in the world is watching the masters at work.', 'If you enter this world knowing you are loved and you leave this world knowing the same, then everything that happens in between can be dealt with.', 'I am just like anyone. I cut and I bleed and I embarrass easily.', 'I was a veteran before I was a teenager.', 'People write negative things cause they feel that is what sells. Good news to them does not sell.', 'I will say again that I have never and would never harm a child.', 'My mother is wonderful to me. She is a lady with a very unique sense of humor.', 'I am never satisfied with my work. I am a perfectionist.', 'To live is to be musical, starting with the blood dancing in your veins.', 'Children show me in their playful smiles the divine in everyone.', 'I love my family deeply and I have put them through so much.', 'Lies run sprints, but the truth runs marathons.', 'The meaning of life is contained in every single expression of life. It is present in the infinity of forms and phenomena that exist in all of creation.', 'I am a black American. I am proud of my race. I am proud of who I am.' ] }
+            ];
+
+            // Dom refs
+            const homeView = document.getElementById('homeView');
+            const detailView = document.getElementById('detailView');
+            const legendList = document.getElementById('legendList');
+            const quotesList = document.getElementById('quotesList');
+            const detailName = document.getElementById('detailName');
+            const detailQuoteCount = document.getElementById('detailQuoteCount');
+            const backButton = document.getElementById('backButton');
+            const searchInput = document.getElementById('searchInput');
+            const categoryFiltersDiv = document.getElementById('categoryFilters');
+            const quoteCardDiv = document.getElementById('quoteOfTheDayCard');
+
+            let currentLegendId = null;
+            let isNavigating = false;
+            let activeCategory = 'All';
+            let currentSearchTerm = '';
+
+            // Render random quote of the day
+            function renderQuoteOfTheDay() {
+                const allQuotes = [];
+                legendsData.forEach(legend => {
+                    legend.quotes.forEach(q => {
+                        allQuotes.push({ text: q, author: legend.name });
+                    });
+                });
+                const randomIndex = Math.floor(Math.random() * allQuotes.length);
+                const selected = allQuotes[randomIndex];
+                quoteCardDiv.innerHTML = `
+                    <div class="quote-card-label">✨ Quote of the Day</div>
+                    <div class="quote-card-text">“${escapeHTML(selected.text)}”</div>
+                    <div class="quote-card-author">— ${escapeHTML(selected.author)}</div>
+                `;
+            }
+
+            // Category filters UI
+            function buildCategoryFilters() {
+                const categoriesSet = new Set(legendsData.map(l => l.category));
+                const categories = ['All', ...Array.from(categoriesSet).sort()];
+                categoryFiltersDiv.innerHTML = '';
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.textContent = cat;
+                    btn.classList.add('category-btn');
+                    if (activeCategory === cat) btn.classList.add('active');
+                    btn.addEventListener('click', () => {
+                        activeCategory = cat;
+                        renderFilteredLegendList();
+                        buildCategoryFilters();
+                    });
+                    categoryFiltersDiv.appendChild(btn);
+                });
+            }
+
+            // Filter logic: search term (only by legend name) + category
+            function getFilteredLegends() {
+                return legendsData.filter(legend => {
+                    const matchesCategory = activeCategory === 'All' || legend.category === activeCategory;
+                    if (!matchesCategory) return false;
+                    if (!currentSearchTerm.trim()) return true;
+                    const term = currentSearchTerm.toLowerCase();
+                    // ONLY filter by legend name, not quotes
+                    return legend.name.toLowerCase().includes(term);
+                });
+            }
+
+            function renderFilteredLegendList() {
+                const filtered = getFilteredLegends();
+                legendList.innerHTML = '';
+                filtered.forEach((legend, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'legend-item';
+                    li.style.animationDelay = `${index * 0.03}s`;
+                    const link = document.createElement('a');
+                    link.className = 'legend-link';
+                    link.href = `#${legend.id}`;
+                    link.setAttribute('data-legend-id', legend.id);
+                    link.innerHTML = `<span class="legend-name">${escapeHTML(legend.name)}</span><span class="legend-arrow">→</span>`;
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        navigateToLegend(legend.id);
+                    });
+                    li.appendChild(link);
+                    legendList.appendChild(li);
+                });
+            }
+
+            // Navigate
+            function navigateToLegend(legendId) {
+                if (isNavigating) return;
+                isNavigating = true;
+                currentLegendId = legendId;
+                const legend = legendsData.find(l => l.id === legendId);
+                if (!legend) { isNavigating = false; return; }
+                if (window.location.hash !== `#${legendId}`) history.pushState({ legendId }, '', `#${legendId}`);
+                detailName.textContent = legend.name;
+                detailQuoteCount.textContent = `${legend.quotes.length} quotes`;
+                quotesList.innerHTML = '';
+                legend.quotes.forEach((quote, idx) => {
+                    const li = document.createElement('li');
+                    li.className = 'quote-item';
+                    li.style.animationDelay = `${idx * 0.06}s`;
+                    li.innerHTML = `<span class="quote-text">${escapeHTML(quote)}</span>`;
+                    quotesList.appendChild(li);
+                });
+                homeView.style.display = 'none';
+                detailView.classList.add('active');
+                detailView.style.display = 'block';
+                detailView.setAttribute('aria-hidden', 'false');
+                homeView.setAttribute('aria-hidden', 'true');
+                detailView.style.animation = 'none';
+                detailView.offsetHeight;
+                detailView.style.animation = 'fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => backButton.focus(), 300);
+                isNavigating = false;
+            }
+
+            function navigateToHome() {
+                if (isNavigating) return;
+                isNavigating = true;
+                currentLegendId = null;
+                if (window.location.hash) history.pushState({ legendId: null }, '', window.location.pathname);
+                detailView.classList.remove('active');
+                detailView.style.display = 'none';
+                detailView.setAttribute('aria-hidden', 'true');
+                homeView.style.display = '';
+                homeView.setAttribute('aria-hidden', 'false');
+                renderFilteredLegendList();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                isNavigating = false;
+            }
+
+            // Event listeners
+            backButton.addEventListener('click', (e) => { e.preventDefault(); navigateToHome(); });
+            window.addEventListener('popstate', (event) => {
+                if (event.state && event.state.legendId) navigateToLegend(event.state.legendId);
+                else navigateToHome();
+            });
+            searchInput.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value;
+                renderFilteredLegendList();
+                buildCategoryFilters(); // re-render to keep active highlight
+            });
+
+            // Light / Dark mode toggle with localStorage
+            const themeToggle = document.getElementById('themeToggle');
+            function applyTheme(theme) {
+                if (theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    themeToggle.textContent = '☀️';
+                } else {
+                    document.body.classList.remove('light-mode');
+                    themeToggle.textContent = '🌙';
+                }
+                localStorage.setItem('theme', theme);
+            }
+            function loadTheme() {
+                const saved = localStorage.getItem('theme');
+                if (saved === 'light') applyTheme('light');
+                else applyTheme('dark');
+            }
+            themeToggle.addEventListener('click', () => {
+                const isLight = document.body.classList.contains('light-mode');
+                applyTheme(isLight ? 'dark' : 'light');
+            });
+            loadTheme();
+
+            function handleInitialHash() {
+                const hash = window.location.hash.replace('#', '');
+                if (hash && legendsData.find(l => l.id === hash)) {
+                    setTimeout(() => navigateToLegend(hash), 50);
+                } else {
+                    history.replaceState({ legendId: null }, '', window.location.pathname);
+                }
+            }
+
+            function escapeHTML(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+            function init() {
+                renderQuoteOfTheDay();
+                buildCategoryFilters();
+                renderFilteredLegendList();
+                handleInitialHash();
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && detailView.classList.contains('active')) navigateToHome(); });
+                const logoImg = document.querySelector('.logo-img');
+                if (logoImg) {
+                    logoImg.classList.add('loading');
+                    logoImg.addEventListener('error', function() { this.style.display = 'none'; if (this.nextElementSibling) this.nextElementSibling.style.display = 'flex'; });
+                    logoImg.addEventListener('load', () => logoImg.classList.remove('loading'));
+                }
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+        })();
+    </script>
+</body>
+</html>
